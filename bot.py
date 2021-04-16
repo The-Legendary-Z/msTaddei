@@ -2,27 +2,23 @@ import os
 import discord
 from discord.ext import commands
 
+
 client = commands.Bot(command_prefix="td!")
 
 
-@client.command()
-async def load(ctx, extension):
-    client.load_extension(f"cogs.{extension}")
-
-@client.command()
-async def unload(ctx, extension):
-    client.unload_extension(f"cogs.{extension}")
-
-for filename in os.listdir("./cogs"):
-    if filename.endswith(".py"):
-        client.load_extension(f"cogs.{filename[:-3]}")
-
-
+cogs = ["cogs.core"]
 
 
 @client.event
 async def on_ready():
     print("Ms. Taddei has joined the chat madafackas")
+    print("Loading dem cogs...")
+    for cog in cogs:
+        try:
+            client.load_extension(cog)
+            print(f"{cog} was loaded")
+        except Exception as e:
+            print(e)
 
 
 @client.command()
